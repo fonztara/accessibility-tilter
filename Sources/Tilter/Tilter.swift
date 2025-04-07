@@ -3,11 +3,14 @@
 
 import SwiftUI
 
-public struct MyView: View {
-    public init() {
+struct AccessibleSlider: ViewModifier {
+    func body(content: Content) -> some View {
+        content
     }
-    
-    public var body: some View {
-        Text("BIIIIIIIIIIII")
+}
+
+extension Slider {
+    func accessibilityEnabled() -> some View {
+        modifier(AccessibleSlider())
     }
 }
