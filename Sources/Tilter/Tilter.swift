@@ -6,6 +6,7 @@ import SwiftUI
 struct AccessibleSlider: ViewModifier {
     func body(content: Content) -> some View {
         content
+            .foregroundStyle(.red)
     }
 }
 
