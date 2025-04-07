@@ -10,7 +10,7 @@ struct AccessibleSlider: ViewModifier {
 }
 
 extension Slider {
-    func accessibilityEnabled() -> some View {
+    func tilterEnabled() -> some View {
         modifier(AccessibleSlider())
     }
 }
