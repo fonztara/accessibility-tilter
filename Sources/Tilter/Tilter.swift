@@ -8,6 +8,6 @@ public struct MyView: View {
     }
     
     public var body: some View {
-        Text("Hello, World!")
+        Text("BIIIIIIIIIIII")
     }
 }
