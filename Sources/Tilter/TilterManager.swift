@@ -47,16 +47,6 @@ public class TilterManager: @unchecked Sendable {
     }
     
     func startGyros() {
-        let engine = try! CHHapticEngine()
-        engine.playsHapticsOnly = true
-        
-        do {
-            try engine.start()
-        } catch {
-            print("Error starting engine: \(error)")
-        }
-        
-        
         
         if motion.isDeviceMotionAvailable {
             self.motion.deviceMotionUpdateInterval = 1.0 / 10.0
@@ -95,31 +85,11 @@ public class TilterManager: @unchecked Sendable {
                         if (self.devRoll >= 20 && self.devRoll <= 120) {
                             //MARK: INCREASE
                             self.increase(by: 0.1)
-                            
-                            do {
-                                let bundle = Bundle(for: TilterManager.self)
-                                guard let url = bundle.url(forResource: "provaAHAP", withExtension: "json", subdirectory: "Resources") else {
-                                    print("AHAP file not found")
-                                    return
-                                }
-                                try engine.playPattern(from: url)
-                            } catch {
-                                print("Error playing pattern: \(error)")
-                            }
+                            self.playHaptic()
                         } else if (self.devRoll <= -20 && self.devRoll >= -120) || (self.devRoll <= 340 && self.devRoll >= 270) {
                             //MARK: DECREASE
                             self.decrease(by: 0.1)
-                            
-                            do {
-                                let bundle = Bundle(for: TilterManager.self)
-                                guard let url = bundle.url(forResource: "provaAHAP", withExtension: "json", subdirectory: "Resources") else {
-                                    print("AHAP file not found")
-                                    return
-                                }
-                                try engine.playPattern(from: url)
-                            } catch {
-                                print("Error playing pattern: \(error)")
-                            }
+                            self.playHaptic()
                         }
                     }
                     
@@ -155,6 +125,28 @@ public class TilterManager: @unchecked Sendable {
     
     func decrease(by step: Double) {
         self.value.wrappedValue = self.value.wrappedValue - step
+    }
+    
+    func playHaptic() {
+        let engine = try! CHHapticEngine()
+        engine.playsHapticsOnly = true
+        
+        do {
+            try engine.start()
+        } catch {
+            print("Error starting engine: \(error)")
+        }
+        
+        do {
+            let bundle = Bundle(for: TilterManager.self)
+            guard let url = bundle.url(forResource: "provaAHAP", withExtension: "ahap", subdirectory: "Resources") else {
+                print("AHAP file not found")
+                return
+            }
+            try engine.playPattern(from: url)
+        } catch {
+            print("Error playing pattern: \(error)")
+        }
     }
     
 }
