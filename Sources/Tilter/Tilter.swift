@@ -14,6 +14,9 @@ struct AccessibleSlider: ViewModifier {
             .onAppear {
                 tilterManagerBox.setBindings(isOn: $isOn, value: $value)
             }
+            .onChange(of: isOn) { newValue in
+                tilterManagerBox.setBindings(isOn: $isOn, value: $value)
+            }
     }
 }
 
