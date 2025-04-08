@@ -3,18 +3,9 @@
 
 import SwiftUI
 
-struct AccessibleSlider: ViewModifier {
-    func body(content: Content) -> some View {
-        VStack {
-            content
-            Text("OK")
-        }
-    }
-}
-
 extension Slider {
     
-    public func tilterEnabled() -> some View {
-        modifier(AccessibleSlider())
+    public func tilterEnabled(value: Binding<any BinaryFloatingPoint>) {
+        print(value)
     }
 }
