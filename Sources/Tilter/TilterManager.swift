@@ -32,6 +32,17 @@ public class TilterManager: @unchecked Sendable {
     
     public var value: Binding<Double>
     
+    public init() {
+        self.isOn = Binding(get: {
+            false
+        }, set: { newValue in
+        })
+        self.value = Binding(get: {
+            0.5
+        }, set: { newValue in
+        })
+    }
+    
     public init(isOn: Binding<Bool>, value: Binding<Double>) {
         self.isOn = isOn
         self.value = value
