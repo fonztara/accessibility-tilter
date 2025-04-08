@@ -20,11 +20,12 @@ class TilterManager: @unchecked Sendable {
     
     var enabled: Binding<Bool> {
         didSet {
-            print("\(enabled.wrappedValue ? "Enabled" : "Disabled")")
             if enabled.wrappedValue {
-                self.startGyros()
+//                self.startGyros()
+                self.increase(by: 0.1)
             } else {
-                self.stopGyros()
+//                self.stopGyros()
+                self.decrease(by: 0.1)
             }
         }
     }
