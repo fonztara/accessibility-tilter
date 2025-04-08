@@ -5,7 +5,7 @@ import SwiftUI
 
 extension Slider {
     
-    public func tilterEnabled(value: Binding<any BinaryFloatingPoint>) {
+    public func tilterEnabled(value: Binding<Double>) {
         print(value)
     }
 }
