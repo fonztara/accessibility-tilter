@@ -160,10 +160,12 @@ public class TilterManager: @unchecked Sendable {
     
 }
 
-class TilterManagerBox: ObservableObject {
+public class TilterManagerBox: ObservableObject {
     var manager: TilterManager?
     
-    func setBindings(isOn: Binding<Bool>, value: Binding<Double>) {
+    public init() {}
+    
+    public func setBindings(isOn: Binding<Bool>, value: Binding<Double>) {
         manager = TilterManager(isOn: isOn, value: value)
     }
 }
