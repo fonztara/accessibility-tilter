@@ -18,9 +18,9 @@ class TilterManager: @unchecked Sendable {
     var devPitch: Double = 0.0
     var devYaw: Double = 0.0
     
-    var enabled: Binding<Bool> {
+    var isOn: Binding<Bool> {
         didSet {
-            if enabled.wrappedValue {
+            if self.isOn.wrappedValue {
 //                self.startGyros()
                 self.increase(by: 0.1)
             } else {
@@ -32,8 +32,8 @@ class TilterManager: @unchecked Sendable {
     
     var value: Binding<Double>
     
-    init(enabled: Binding<Bool>, value: Binding<Double>) {
-        self.enabled = enabled
+    init(isOn: Binding<Bool>, value: Binding<Double>) {
+        self.isOn = isOn
         self.value = value
     }
     

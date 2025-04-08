@@ -8,7 +8,7 @@ struct AccessibleSlider: ViewModifier {
     @Binding var value: Double
     
     var tilterManager: TilterManager {
-        TilterManager(enabled: $isOn, value: $value)
+        TilterManager(isOn: $isOn, value: $value)
     }
     
     func body(content: Content) -> some View {
