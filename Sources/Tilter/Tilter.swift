@@ -14,10 +14,13 @@ struct AccessibleSlider: ViewModifier {
     func body(content: Content) -> some View {
         VStack {
             content
+                .padding()
             Text("OG: \(isOn ? "On" : "Off")")
-            Text("TM: \(isOn ? "On" : "Off")")
             Text("OG: \(value)")
+                .padding(.bottom, 32)
+            Text("TM: \(tilterManager.isOn.wrappedValue ? "On" : "Off")")
             Text("TM: \(tilterManager.value)")
+                .padding(.bottom, 32)
             Toggle(isOn: $isOn) {
                 Text("Toggle")
             }
