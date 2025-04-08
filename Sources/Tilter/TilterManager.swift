@@ -97,8 +97,9 @@ public class TilterManager: @unchecked Sendable {
                             self.increase(by: 0.1)
                             
                             do {
-                                let url = Bundle.main.url(forResource: "provaAHAP", withExtension: "json")
-                                try engine.playPattern(from: url!)
+                                if let url = Bundle.main.url(forResource: "provaAHAP", withExtension: "json") {
+                                    try engine.playPattern(from: url)
+                                }
                             } catch {
                                 print("Error playing pattern: \(error)")
                             }
@@ -107,8 +108,9 @@ public class TilterManager: @unchecked Sendable {
                             self.decrease(by: 0.1)
                             
                             do {
-                                let url = Bundle.main.url(forResource: "provaAHAP", withExtension: "json")
-                                try engine.playPattern(from: url!)
+                                if let url = Bundle.main.url(forResource: "provaAHAP", withExtension: "json") {
+                                    try engine.playPattern(from: url)
+                                }
                             } catch {
                                 print("Error playing pattern: \(error)")
                             }
