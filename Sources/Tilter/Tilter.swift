@@ -7,7 +7,7 @@ struct AccessibleSlider: ViewModifier {
     @Binding var isOn: Bool
     @Binding var value: Double
     
-    @StateObject private var tilterManagerBox = TilterManagerBox()
+    @StateObject public var tilterManagerBox = TilterManagerBox()
     
     func body(content: Content) -> some View {
         VStack {
