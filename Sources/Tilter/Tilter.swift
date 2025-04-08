@@ -19,7 +19,7 @@ struct AccessibleSlider: ViewModifier {
             Text("OG: \(value)")
                 .padding(.bottom, 32)
             Text("TM: \(tilterManager.isOn.wrappedValue ? "On" : "Off")")
-            Text("TM: \(tilterManager.value)")
+            Text("TM: \(tilterManager.value.wrappedValue.description)")
                 .padding(.bottom, 32)
             Toggle(isOn: $isOn) {
                 Text("Toggle")
