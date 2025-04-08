@@ -147,7 +147,7 @@ public class TilterManager: @unchecked Sendable {
         }
         
         do {
-            guard let path = Bundle.module.path(forResource: "provaAHAP", ofType: "json", inDirectory: "Resources") else {
+            guard let path = Bundle.module.path(forResource: "provaAHAP", ofType: "json") else {
                 print("AHAP file not found")
                 return
             }
