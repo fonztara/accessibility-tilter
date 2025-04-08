@@ -147,11 +147,11 @@ public class TilterManager: @unchecked Sendable {
         }
         
         do {
-            let bundle = Bundle(for: TilterManager.self)
-            guard let url = bundle.url(forResource: "provaAHAP", withExtension: "json", subdirectory: "./Resources") else {
+            guard let path = Bundle.module.path(forResource: "provaAHAP", ofType: "json", inDirectory: "Resources") else {
                 print("AHAP file not found")
                 return
             }
+            let url = URL(fileURLWithPath: path)
             try engine.playPattern(from: url)
         } catch {
             print("Error playing pattern: \(error)")
