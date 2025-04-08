@@ -148,7 +148,7 @@ public class TilterManager: @unchecked Sendable {
         
         do {
             let bundle = Bundle(for: TilterManager.self)
-            guard let url = bundle.url(forResource: "provaAHAP", withExtension: "ahap", subdirectory: "../Resources") else {
+            guard let url = bundle.url(forResource: "provaAHAP", withExtension: "json", subdirectory: "Resources") else {
                 print("AHAP file not found")
                 return
             }
