@@ -144,11 +144,11 @@ public class TilterManager: @unchecked Sendable {
     }
     
     func increase(by step: Double) {
-        print("\(self.value.wrappedValue + step)")
+        self.value.wrappedValue = self.value.wrappedValue + step
     }
     
     func decrease(by step: Double) {
-        print("\(self.value.wrappedValue - step)")
+        self.value.wrappedValue = self.value.wrappedValue - step
     }
     
 }
