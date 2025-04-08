@@ -9,7 +9,7 @@
 @preconcurrency import CoreHaptics
 import SwiftUI
 
-class TilterManager: @unchecked Sendable {
+public class TilterManager: @unchecked Sendable {
     let motion = CMMotionManager()
     
     var timer: Timer? = nil
@@ -32,7 +32,7 @@ class TilterManager: @unchecked Sendable {
     
     var value: Binding<Double>
     
-    init(isOn: Binding<Bool>, value: Binding<Double>) {
+    public init(isOn: Binding<Bool>, value: Binding<Double>) {
         self.isOn = isOn
         self.value = value
     }
