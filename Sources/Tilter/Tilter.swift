@@ -3,6 +3,12 @@
 
 import SwiftUI
 
+struct AccessibleSlider: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+    }
+}
+
 extension Slider {
     
     public func tilterEnabled(value: Binding<Double>) {
