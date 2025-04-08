@@ -28,7 +28,7 @@ struct AccessibleSlider: ViewModifier {
     }
 }
 
-extension Slider {
+extension View {
     
     public func tilterEnabled(isOn: Binding<Bool>, value: Binding<Double>) -> some View {
         return modifier(AccessibleSlider(isOn: isOn, value: value))
