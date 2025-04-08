@@ -7,10 +7,10 @@ struct AccessibleSlider: ViewModifier {
     @Binding var value: Double
     
     func body(content: Content) -> some View {
-        content
-            .onChange(of: value) { newValue in
-                print(newValue)
-            }
+        VStack {
+            content
+            Text("\(value)")
+        }
     }
 }
 
