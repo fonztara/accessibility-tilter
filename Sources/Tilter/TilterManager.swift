@@ -128,7 +128,16 @@ public class TilterManager: @unchecked Sendable {
     }
     
     func playHaptic() {
-        let engine = try! CHHapticEngine()
+        var engine: CHHapticEngine? = nil
+        
+        do {
+            engine = try CHHapticEngine()
+        } catch {
+            print(error.localizedDescription)
+        }
+        
+        guard let engine = engine else { return }
+        
         engine.playsHapticsOnly = true
         
         do {
