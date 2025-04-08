@@ -30,7 +30,7 @@ public class TilterManager: @unchecked Sendable {
         }
     }
     
-    var value: Binding<Double>
+    public var value: Binding<Double>
     
     public init(isOn: Binding<Bool>, value: Binding<Double>) {
         self.isOn = isOn
