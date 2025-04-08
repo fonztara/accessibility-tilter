@@ -7,23 +7,23 @@ struct AccessibleSlider: ViewModifier {
     @Binding var isOn: Bool
     @Binding var value: Double
     
-    var tilterManager: TilterManager {
-        TilterManager(isOn: $isOn, value: $value)
-    }
+    @StateObject private var tilterManagerBox = TilterManagerBox()
     
     func body(content: Content) -> some View {
         VStack {
             content
-                .padding()
-            Text("OG: \(isOn ? "On" : "Off")")
-            Text("OG: \(value)")
-                .padding(.bottom, 32)
-            Text("TM: \(tilterManager.isOn.wrappedValue ? "On" : "Off")")
-            Text("TM: \(tilterManager.value.wrappedValue.description)")
-                .padding(.bottom, 32)
-            Toggle(isOn: $isOn) {
-                Text("Toggle")
-            }
+            Text("TM: \(tilterManagerBox.manager?.value.wrappedValue ?? 0.0)")
+            Toggle("Toggle", isOn: $isOn)
+                .onChange(of: isOn) { newValue in
+                    if newValue {
+                        tilterManagerBox.manager?.startGyros()
+                    } else {
+                        tilterManagerBox.manager?.stopGyros()
+                    }
+                }
+        }
+        .onAppear {
+            tilterManagerBox.setBindings(isOn: $isOn, value: $value)
         }
     }
 }

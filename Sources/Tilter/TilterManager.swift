@@ -21,11 +21,9 @@ public class TilterManager: @unchecked Sendable {
     var isOn: Binding<Bool> {
         didSet {
             if self.isOn.wrappedValue {
-//                self.startGyros()
-                self.increase(by: 0.1)
+                self.startGyros()
             } else {
-//                self.stopGyros()
-                self.decrease(by: 0.1)
+                self.stopGyros()
             }
         }
     }
@@ -151,4 +149,12 @@ public class TilterManager: @unchecked Sendable {
         self.value.wrappedValue = self.value.wrappedValue - step
     }
     
+}
+
+class TilterManagerBox: ObservableObject {
+    var manager: TilterManager?
+    
+    func setBindings(isOn: Binding<Bool>, value: Binding<Double>) {
+        manager = TilterManager(isOn: isOn, value: value)
+    }
 }
