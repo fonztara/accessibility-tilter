@@ -22,6 +22,12 @@ let package = Package(
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
             name: "Tilter"),
+        .target(
+            name: "TilterPackage",
+            resources: [
+                .process("Sources/Resources/provaAHAP.json")
+            ]
+        ),
         .testTarget(
             name: "TilterTests",
             dependencies: ["Tilter"]
