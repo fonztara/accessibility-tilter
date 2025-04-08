@@ -4,15 +4,19 @@
 import SwiftUI
 
 struct AccessibleSlider: ViewModifier {
+    @Binding var value: Double
+    
     func body(content: Content) -> some View {
         content
+            .onChange(of: value) { newValue in
+                print(newValue)
+            }
     }
 }
 
 extension Slider {
     
     public func tilterEnabled(value: Binding<Double>) -> some View {
-        print(value)
-        return modifier(AccessibleSlider())
+        return modifier(AccessibleSlider(value: value))
     }
 }
