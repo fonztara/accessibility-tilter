@@ -9,6 +9,7 @@
 @preconcurrency import CoreHaptics
 import SwiftUI
 
+
 public class TilterManager: @unchecked Sendable {
     let motion = CMMotionManager()
     
