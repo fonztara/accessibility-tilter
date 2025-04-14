@@ -75,7 +75,7 @@ public class TilterManager {
                         self.devPitch = round(pitch * 180.0 / .pi)
                         self.devYaw = round(yaw * 180.0 / .pi)
                         
-                        let tiltingRightFactor = Double(Int((self.devRoll)/100 * 10))
+                        let tiltingRightFactor = Double(Int((self.devRoll - 20)/100 * 10))
                         print(tiltingRightFactor)
                         let tiltingLeftFactor = 0.5
                         
