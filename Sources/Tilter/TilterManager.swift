@@ -58,6 +58,8 @@ public class TilterManager {
         
         var referenceAttitude: CMAttitude? = nil
         var counter = 0
+        var tiltingRightFactor: Int = 0
+        var tiltingLeftFactor: Int = 0
         
         gyroTask = Task { @MainActor in
             while isOn.wrappedValue {
@@ -75,12 +77,12 @@ public class TilterManager {
                         self.devPitch = round(pitch * 180.0 / .pi)
                         self.devYaw = round(yaw * 180.0 / .pi)
                         
-                        let tiltingRightFactor = Int((self.devRoll/100) * 10)
+                        tiltingRightFactor = Int((self.devRoll/100) * 10)
                         print(tiltingRightFactor)
-                        let tiltingLeftFactor = 0.5
+                        tiltingLeftFactor = 0
                         
                         if counter == 0 {
-                            if self.devRoll >= 20 && self.devRoll <= 120 {
+                            if tiltingRightFactor >= 1 {
                                 self.increase()
                                 self.playHaptic()
                             } else if self.devRoll <= -20 && self.devRoll >= -120 || self.devRoll <= 340 && self.devRoll >= 270 {
@@ -92,9 +94,10 @@ public class TilterManager {
                         counter = (counter + 1) % 2
                     }
                 }
+                let nanoseconds: UInt64 = 100_000_000/UInt64(tiltingRightFactor)
                 
                 do {
-                    try await Task.sleep(nanoseconds: 100_000_000)
+                    try await Task.sleep(nanoseconds: nanoseconds)
                 } catch {
                     print(error.localizedDescription)
                 }
