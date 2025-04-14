@@ -14,13 +14,13 @@ struct AccessibleSlider: ViewModifier {
             content
             Text("TM: \(tilterManagerBox.manager?.value.wrappedValue ?? 0.0)")
             Toggle("Toggle", isOn: $isOn)
-                .onChange(of: isOn) { newValue in
-                    if newValue {
-                        tilterManagerBox.manager?.startGyros()
-                    } else {
-                        tilterManagerBox.manager?.stopGyros()
-                    }
-                }
+//                .onChange(of: isOn) { newValue in
+//                    if newValue {
+//                        tilterManagerBox.manager?.startGyros()
+//                    } else {
+//                        tilterManagerBox.manager?.stopGyros()
+//                    }
+//                }
         }
         .onAppear {
             tilterManagerBox.setBindings(isOn: $isOn, value: $value)
