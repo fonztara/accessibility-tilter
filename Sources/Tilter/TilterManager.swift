@@ -94,7 +94,7 @@ public class TilterManager {
                         counter = (counter + 1) % 2
                     }
                 }
-                let nanoseconds: UInt64 = 100_000_000/UInt64(tiltingRightFactor)
+                let nanoseconds: UInt64 = tiltingRightFactor > 0 ? 100_000_000/UInt64(tiltingRightFactor) : 100_000_000
                 
                 do {
                     try await Task.sleep(nanoseconds: nanoseconds)
