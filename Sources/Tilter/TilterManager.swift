@@ -5,12 +5,12 @@
 //  Created by Alfonso Tarallo on 08/04/25.
 //
 
-@preconcurrency import CoreMotion
-@preconcurrency import CoreHaptics
+import CoreMotion
+import CoreHaptics
 import SwiftUI
 
-
-public class TilterManager: @unchecked Sendable {
+@MainActor
+public class TilterManager {
     let motion = CMMotionManager()
     
     var timer: Timer? = nil
@@ -47,77 +47,60 @@ public class TilterManager: @unchecked Sendable {
         self.value = value
     }
     
+    var gyroTask: Task<Void, Never>? = nil
+    
     func startGyros() {
+        guard motion.isDeviceMotionAvailable else { return }
         
-        if motion.isDeviceMotionAvailable {
-            self.motion.deviceMotionUpdateInterval = 1.0 / 10.0
-            self.motion.showsDeviceMovementDisplay = true
-            self.motion.startDeviceMotionUpdates(using: .xArbitraryCorrectedZVertical)
-            
-            var referenceAttitude: CMAttitude? = nil
-            
-            var counter = 0
-            
-            
-            // Configure a timer to fetch the accelerometer data.
-            self.timer = Timer(fire: Date(), interval: (1.0/10.0),
-                               repeats: true, block: { (timer) in
-                // Get the gyro data.
-                if let data = self.motion.deviceMotion {
+        self.motion.deviceMotionUpdateInterval = 1.0 / 10.0
+        self.motion.showsDeviceMovementDisplay = true
+        self.motion
+            .startDeviceMotionUpdates(using: .xArbitraryCorrectedZVertical)
+        
+        var referenceAttitude: CMAttitude? = nil
+        var counter = 0
+        
+        gyroTask = Task { @MainActor in
+            while isOn.wrappedValue {
+                if let data = motion.deviceMotion {
                     let roll = data.attitude.roll
                     let pitch = data.attitude.pitch
                     let yaw = data.attitude.yaw
-                    
-                    
-                    
-                    guard let referenceAttitude = referenceAttitude else {
+
+                    if referenceAttitude == nil {
                         referenceAttitude = data.attitude
-                        return
-                    }
-                    
-                    let rollDifference = roll - referenceAttitude.roll
-                    
-                    self.devRoll = round(rollDifference * 180.0 / .pi)
-                    self.devPitch = round(pitch * 180.0 / .pi)
-                    self.devYaw = round(yaw * 180.0 / .pi)
-                    
-                    // Use the gyroscope data in your app.
-                    if counter == 0 {
-                        if (self.devRoll >= 20 && self.devRoll <= 120) {
-                            //MARK: INCREASE
-                            self.increase(by: 0.1)
-                            self.playHaptic()
-                        } else if (self.devRoll <= -20 && self.devRoll >= -120) || (self.devRoll <= 340 && self.devRoll >= 270) {
-                            //MARK: DECREASE
-                            self.decrease(by: 0.1)
-                            self.playHaptic()
-                        }
-                    }
-                    
-                    if counter <= 1 {
-                        counter += 1
                     } else {
-                        counter = 0
+                        let rollDifference = roll - referenceAttitude!.roll
+                        
+                        self.devRoll = round(rollDifference * 180.0 / .pi)
+                        self.devPitch = round(pitch * 180.0 / .pi)
+                        self.devYaw = round(yaw * 180.0 / .pi)
+                        
+                        if counter == 0 {
+                            if self.devRoll >= 20 && self.devRoll <= 120 {
+                                self.increase(by: 0.1)
+                                self.playHaptic()
+                            } else if self.devRoll <= -20 && self.devRoll >= -120 || self.devRoll <= 340 && self.devRoll >= 270 {
+                                self.decrease(by: 0.1)
+                                self.playHaptic()
+                            }
+                        }
+                        
+                        counter = (counter + 1) % 3
                     }
-                    
                 }
-            })
-            
-            
-            // Add the timer to the current run loop.
-            RunLoop.current.add(self.timer!, forMode: .default)
+
+                try? await Task.sleep(nanoseconds: 100_000_000) // 0.1s
+            }
         }
     }
     
     
     func stopGyros() {
-        if self.timer != nil {
-            self.timer?.invalidate()
-            self.timer = nil
-            
-            
-            self.motion.stopDeviceMotionUpdates()
-        }
+        gyroTask?.cancel()
+        gyroTask = nil
+        
+        motion.stopDeviceMotionUpdates()
     }
     
     func increase(by step: Double) {
@@ -166,6 +149,7 @@ public class TilterManagerBox: ObservableObject {
     
     public init() {}
     
+    @MainActor
     public func setBindings(isOn: Binding<Bool>, value: Binding<Double>) {
         manager = TilterManager(isOn: isOn, value: value)
     }
