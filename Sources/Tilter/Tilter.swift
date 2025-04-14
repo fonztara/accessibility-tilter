@@ -12,7 +12,6 @@ struct AccessibleSlider: ViewModifier {
     func body(content: Content) -> some View {
         VStack {
             content
-            Text("TM: \(tilterManagerBox.manager?.value.wrappedValue ?? 0.0)")
             Toggle("Toggle", isOn: $isOn)
                 .onChange(of: isOn) { newValue in
                     if newValue {

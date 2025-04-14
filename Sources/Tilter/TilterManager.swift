@@ -21,22 +21,29 @@ public class TilterManager {
     
     var isOn: Binding<Bool>
     
-    public var value: Binding<Double>
+    public var value: Binding<Double>?
+    
+    public var date: Binding<Date>?
     
     public init() {
         self.isOn = Binding(get: {
             false
         }, set: { newValue in
         })
-        self.value = Binding(get: {
-            0.5
-        }, set: { newValue in
-        })
+        self.value = nil
+        self.date = nil
     }
     
     public init(isOn: Binding<Bool>, value: Binding<Double>) {
         self.isOn = isOn
         self.value = value
+        self.date = nil
+    }
+    
+    public init(isOn: Binding<Bool>, date: Binding<Date>) {
+        self.isOn = isOn
+        self.value = nil
+        self.date = date
     }
     
     var gyroTask: Task<Void, Never>? = nil
@@ -100,11 +107,19 @@ public class TilterManager {
     }
     
     func increase(by step: Double) {
-        self.value.wrappedValue = self.value.wrappedValue + step
+        if let _ = self.value {
+            self.value!.wrappedValue = self.value!.wrappedValue + step
+        } else if let _ = self.date {
+            self.date!.wrappedValue = self.date!.wrappedValue.addingTimeInterval(86400)
+        }
     }
     
     func decrease(by step: Double) {
-        self.value.wrappedValue = self.value.wrappedValue - step
+        if let _ = self.value {
+            self.value!.wrappedValue = self.value!.wrappedValue - step
+        } else if let _ = self.date {
+            self.date!.wrappedValue = self.date!.wrappedValue.addingTimeInterval(-86400)
+        }
     }
     
     func playHaptic() {
