@@ -75,15 +75,16 @@ public class TilterManager {
                         self.devPitch = round(pitch * 180.0 / .pi)
                         self.devYaw = round(yaw * 180.0 / .pi)
                         
-                        let tiltingRightFactor = (self.devRoll - 20)/100
+                        let tiltingRightFactor = Double(Int((self.devRoll)/100 * 10))
+                        print(tiltingRightFactor)
                         let tiltingLeftFactor = 0.5
                         
                         if counter == 0 {
                             if self.devRoll >= 20 && self.devRoll <= 120 {
-                                self.increase(withFactor: tiltingRightFactor)
+                                self.increase()
                                 self.playHaptic()
                             } else if self.devRoll <= -20 && self.devRoll >= -120 || self.devRoll <= 340 && self.devRoll >= 270 {
-                                self.decrease(withFactor: tiltingLeftFactor)
+                                self.decrease()
                                 self.playHaptic()
                             }
                         }
@@ -109,8 +110,7 @@ public class TilterManager {
         motion.stopDeviceMotionUpdates()
     }
     
-    func increase(withFactor factor: Double) {
-        print("\(Double(Int(factor * 10)) / 10.0)")
+    func increase() {
         if let _ = self.value {
             self.value!.wrappedValue = self.value!.wrappedValue + 0.1
         } else if let _ = self.date {
@@ -118,7 +118,7 @@ public class TilterManager {
         }
     }
     
-    func decrease(withFactor factor: Double) {
+    func decrease() {
         if let _ = self.value {
             self.value!.wrappedValue = self.value!.wrappedValue - 0.1
         } else if let _ = self.date {
