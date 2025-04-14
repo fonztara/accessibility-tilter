@@ -110,7 +110,7 @@ public class TilterManager {
     }
     
     func increase(withFactor factor: Double) {
-        print("\(factor)")
+        print("\(Double(Int(factor * 10)) / 10.0)")
         if let _ = self.value {
             self.value!.wrappedValue = self.value!.wrappedValue + 0.1
         } else if let _ = self.date {
