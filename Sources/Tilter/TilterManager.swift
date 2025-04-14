@@ -75,9 +75,11 @@ public class TilterManager {
                         self.devPitch = round(pitch * 180.0 / .pi)
                         self.devYaw = round(yaw * 180.0 / .pi)
                         
+                        let tiltingRightFactor = (self.devRoll - 20)/100
+                        
                         if counter == 0 {
                             if self.devRoll >= 20 && self.devRoll <= 120 {
-                                self.increase(by: 0.1)
+                                self.increase(by: tiltingRightFactor)
                                 self.playHaptic()
                             } else if self.devRoll <= -20 && self.devRoll >= -120 || self.devRoll <= 340 && self.devRoll >= 270 {
                                 self.decrease(by: 0.1)
