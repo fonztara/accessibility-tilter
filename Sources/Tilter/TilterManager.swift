@@ -89,8 +89,12 @@ public class TilterManager {
                         counter = (counter + 1) % 3
                     }
                 }
-
-                try? await Task.sleep(nanoseconds: 100_000_000) // 0.1s
+                
+                do {
+                    try await Task.sleep(nanoseconds: 100_000_000)
+                } catch {
+                    print(error.localizedDescription)
+                }
             }
         }
     }
