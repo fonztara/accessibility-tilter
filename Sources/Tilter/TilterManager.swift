@@ -164,4 +164,9 @@ public class TilterManagerBox: ObservableObject {
     public func setBindings(isOn: Binding<Bool>, value: Binding<Double>) {
         manager = TilterManager(isOn: isOn, value: value)
     }
+    
+    @MainActor
+    public func setBindings(isOn: Binding<Bool>, date: Binding<Date>) {
+        manager = TilterManager(isOn: isOn, date: date)
+    }
 }
