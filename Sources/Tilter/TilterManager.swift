@@ -76,18 +76,19 @@ public class TilterManager {
                         self.devYaw = round(yaw * 180.0 / .pi)
                         
                         let tiltingRightFactor = (self.devRoll - 20)/100
+                        let tiltingLeftFactor = 0.5
                         
                         if counter == 0 {
                             if self.devRoll >= 20 && self.devRoll <= 120 {
-                                self.increase(by: tiltingRightFactor)
+                                self.increase(withFactor: tiltingRightFactor)
                                 self.playHaptic()
                             } else if self.devRoll <= -20 && self.devRoll >= -120 || self.devRoll <= 340 && self.devRoll >= 270 {
-                                self.decrease(by: 0.1)
+                                self.decrease(withFactor: tiltingLeftFactor)
                                 self.playHaptic()
                             }
                         }
                         
-                        counter = (counter + 1) % 3
+                        counter = (counter + 1) % 2
                     }
                 }
                 
@@ -108,17 +109,18 @@ public class TilterManager {
         motion.stopDeviceMotionUpdates()
     }
     
-    func increase(by step: Double) {
+    func increase(withFactor factor: Double) {
+        print("\(factor)")
         if let _ = self.value {
-            self.value!.wrappedValue = self.value!.wrappedValue + step
+            self.value!.wrappedValue = self.value!.wrappedValue + 0.1
         } else if let _ = self.date {
             self.date!.wrappedValue = self.date!.wrappedValue.addingTimeInterval(86400)
         }
     }
     
-    func decrease(by step: Double) {
+    func decrease(withFactor factor: Double) {
         if let _ = self.value {
-            self.value!.wrappedValue = self.value!.wrappedValue - step
+            self.value!.wrappedValue = self.value!.wrappedValue - 0.1
         } else if let _ = self.date {
             self.date!.wrappedValue = self.date!.wrappedValue.addingTimeInterval(-86400)
         }
