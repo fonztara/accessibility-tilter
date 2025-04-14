@@ -19,17 +19,7 @@ public class TilterManager {
     var devPitch: Double = 0.0
     var devYaw: Double = 0.0
     
-    var isOn: Binding<Bool> {
-        didSet {
-            if self.isOn.wrappedValue {
-                self.startGyros()
-                print("STARTED FROM DIDSET")
-            } else {
-                self.stopGyros()
-                print("STOPPED FROM DIDSET")
-            }
-        }
-    }
+    var isOn: Binding<Bool>
     
     public var value: Binding<Double>
     
