@@ -23,8 +23,10 @@ public class TilterManager {
         didSet {
             if self.isOn.wrappedValue {
                 self.startGyros()
+                print("STARTED FROM DIDSET")
             } else {
                 self.stopGyros()
+                print("STOPPED FROM DIDSET")
             }
         }
     }
