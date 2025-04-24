@@ -46,7 +46,7 @@ public final class TilterManager {
         self.date = date
     }
     
-    public init(isOn: Binding<Bool>, onTiltingLeft: @escaping () -> Void, onTiltingRight: @escaping () -> Void) {
+    public init(isOn: Binding<Bool>, onTiltingLeft: (() -> Void)?, onTiltingRight: (() -> Void)?) {
         self.isOn = isOn
         self.onTiltingLeft = onTiltingLeft
         self.onTiltingRight = onTiltingRight
@@ -90,6 +90,7 @@ public final class TilterManager {
                         if tiltingFactor >= 1 {
                             if let onTiltingRight = onTiltingRight {
                                 onTiltingRight()
+                                self.playHaptic()
                             } else {
                                 self.increase()
                             }
@@ -97,10 +98,10 @@ public final class TilterManager {
                         } else if tiltingFactor <= -1 {
                             if let onTiltingLeft = onTiltingLeft {
                                 onTiltingLeft()
+                                self.playHaptic()
                             } else {
                                 self.decrease()
                             }
-                            self.playHaptic()
                         }
                     }
                 }
@@ -137,16 +138,20 @@ public final class TilterManager {
     func increase() {
         if let _ = self.value {
             self.value!.wrappedValue = self.value!.wrappedValue + 0.1
+            self.playHaptic()
         } else if let _ = self.date {
             self.date!.wrappedValue = self.date!.wrappedValue.addingTimeInterval(86400)
+            self.playHaptic()
         }
     }
     
     func decrease() {
         if let _ = self.value {
             self.value!.wrappedValue = self.value!.wrappedValue - 0.1
+            self.playHaptic()
         } else if let _ = self.date {
             self.date!.wrappedValue = self.date!.wrappedValue.addingTimeInterval(-86400)
+            self.playHaptic()
         }
     }
     
