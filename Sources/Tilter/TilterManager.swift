@@ -21,38 +21,41 @@ public final class TilterManager {
     
     var isOn: Binding<Bool>
     
-    public var value: Binding<Double>?
+    public var value: Binding<Double>? = nil
     
-    public var date: Binding<Date>?
+    public var date: Binding<Date>? = nil
+    
+    var onTiltingLeft: (() -> Void)?
+    var onTiltingRight: (() -> Void)?
     
     public init() {
         self.isOn = Binding(get: {
             false
         }, set: { newValue in
         })
-        self.value = nil
-        self.date = nil
     }
     
     public init(isOn: Binding<Bool>, value: Binding<Double>) {
         self.isOn = isOn
         self.value = value
-        self.date = nil
+        
+        self.onTiltingLeft = self.decrease
+        self.onTiltingRight = self.increase
     }
     
     public init(isOn: Binding<Bool>, date: Binding<Date>) {
         self.isOn = isOn
         self.value = nil
         self.date = date
+        
+        self.onTiltingLeft = self.decrease
+        self.onTiltingRight = self.increase
     }
     
     public init(isOn: Binding<Bool>, onTiltingLeft: (() -> Void)?, onTiltingRight: (() -> Void)?) {
         self.isOn = isOn
         self.onTiltingLeft = onTiltingLeft
         self.onTiltingRight = onTiltingRight
-        
-        self.value = nil
-        self.date = nil
     }
     
     var gyroTask: Task<Void, Never>? = nil
@@ -91,15 +94,11 @@ public final class TilterManager {
                             if let onTiltingRight = onTiltingRight {
                                 onTiltingRight()
                                 self.playHaptic()
-                            } else {
-                                self.increase()
                             }
                         } else if tiltingFactor <= -1 {
                             if let onTiltingLeft = onTiltingLeft {
                                 onTiltingLeft()
                                 self.playHaptic()
-                            } else {
-                                self.decrease()
                             }
                         }
                     }
@@ -124,9 +123,6 @@ public final class TilterManager {
         }
     }
     
-    var onTiltingLeft: (() -> Void)? = nil
-    var onTiltingRight: (() -> Void)? = nil
-    
     func stopGyros() {
         gyroTask?.cancel()
         gyroTask = nil
@@ -137,20 +133,16 @@ public final class TilterManager {
     func increase() {
         if let _ = self.value {
             self.value!.wrappedValue = self.value!.wrappedValue + 0.1
-            self.playHaptic()
         } else if let _ = self.date {
             self.date!.wrappedValue = self.date!.wrappedValue.addingTimeInterval(86400)
-            self.playHaptic()
         }
     }
     
     func decrease() {
         if let _ = self.value {
             self.value!.wrappedValue = self.value!.wrappedValue - 0.1
-            self.playHaptic()
         } else if let _ = self.date {
             self.date!.wrappedValue = self.date!.wrappedValue.addingTimeInterval(-86400)
-            self.playHaptic()
         }
     }
     
