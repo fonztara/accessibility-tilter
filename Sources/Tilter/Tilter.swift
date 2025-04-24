@@ -84,7 +84,7 @@ extension View {
         return modifier(AccessibleCalendar(isOn: isOn, date: date))
     }
     
-    public func tilterEnabled(isOn: Binding<Bool>, onTiltingLeft: @escaping () -> Void, onTiltingRight: @escaping () -> Void) -> some View {
+    public func tilterEnabled(isOn: Binding<Bool>, onTiltingLeft: (() -> Void)?, onTiltingRight: (() -> Void)?) -> some View {
         return modifier(TiltableView(isOn: isOn, onTiltingLeft: onTiltingLeft, onTiltingRight: onTiltingRight))
     }
 }
