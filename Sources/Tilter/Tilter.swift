@@ -64,16 +64,7 @@ struct TiltableView: ViewModifier {
             isTapped = true
         }
         
-        VStack {
-            content
-                .onChange(of: isOn) {
-                    if isOn {
-                        tilterManagerBox.manager?.startGyros()
-                    } else {
-                        tilterManagerBox.manager?.stopGyros()
-                    }
-                }
-            
+        ZStack {
             Rectangle()
                 .foregroundStyle(isTapped ? .blue : .blue.opacity(0.9))
                 .frame(width: 200, height: 150)
@@ -87,6 +78,15 @@ struct TiltableView: ViewModifier {
                     }
                 }
                 .accessibilityAddTraits(.allowsDirectInteraction)
+            
+            content
+                .onChange(of: isOn) {
+                    if isOn {
+                        tilterManagerBox.manager?.startGyros()
+                    } else {
+                        tilterManagerBox.manager?.stopGyros()
+                    }
+                }
         }
         .onAppear {
             tilterManagerBox.setBindings(isOn: $isOn, onTiltingLeft: onTiltingLeft, onTiltingRight: onTiltingRight)
