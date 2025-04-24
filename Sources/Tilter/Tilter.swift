@@ -66,9 +66,8 @@ struct TiltableView: ViewModifier {
         
         ZStack {
             Rectangle()
-                .foregroundStyle(isTapped ? .blue : .blue.opacity(0.9))
+                .foregroundStyle(isTapped ? .blue.opacity(0.1) : .blue.opacity(0.1))
                 .frame(width: 200, height: 150)
-                .shadow(color: .black.opacity(isTapped ? 0.1 : 0.2), radius: 16, x: 0, y: 0)
                 .gesture(tap)
                 .onChange(of: isTapped) {
                     if isTapped {
@@ -91,6 +90,9 @@ struct TiltableView: ViewModifier {
         .onAppear {
             tilterManagerBox.setBindings(isOn: $isOn, onTiltingLeft: onTiltingLeft, onTiltingRight: onTiltingRight)
         }
+        .accessibilityElement()
+        .accessibilityLabel("Value")
+        .accessibilityHint("Keep pressed and tilt the device to perform actions")
     }
 }
 
