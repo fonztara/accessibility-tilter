@@ -57,7 +57,6 @@ public final class TilterManager {
             .startDeviceMotionUpdates(using: .xArbitraryCorrectedZVertical)
         
         var referenceAttitude: CMAttitude? = nil
-        var counter = 0
         var tiltingFactor: Int = 0
         
         gyroTask = Task { @MainActor in
@@ -79,21 +78,26 @@ public final class TilterManager {
                         tiltingFactor = Int((self.devRoll/100) * 10)
                         print(tiltingFactor)
                         
-                        if counter == 0 {
-                            if tiltingFactor >= 1 {
-                                self.increase()
-                                self.playHaptic()
-                            } else if tiltingFactor <= -1 {
-                                tiltingFactor *= -1
-                                self.decrease()
-                                self.playHaptic()
-                            }
+                        if tiltingFactor >= 1 {
+                            self.increase()
+                            self.playHaptic()
+                        } else if tiltingFactor <= -1 {
+                            tiltingFactor *= -1
+                            self.decrease()
+                            self.playHaptic()
                         }
-                        
-                        counter = (counter + 1) % 2
                     }
                 }
-                let nanoseconds: UInt64 = tiltingFactor > 0 ? 100_000_000/UInt64(tiltingFactor) : 100_000_000
+                
+                let nanoseconds: UInt64
+                
+                if tiltingFactor >= 1 {
+                    nanoseconds = 100_000_000/UInt64(tiltingFactor)
+                } else if tiltingFactor <= -1 {
+                    nanoseconds = 100_000_000/UInt64(-tiltingFactor)
+                } else {
+                    nanoseconds = 100_000_000
+                }
                 
                 do {
                     try await Task.sleep(nanoseconds: nanoseconds)
