@@ -52,8 +52,8 @@ struct AccessibleCalendar: ViewModifier {
 struct TiltableView: ViewModifier {
     @Binding var isOn: Bool
     
-    var onTiltingLeft: () -> Void
-    var onTiltingRight: () -> Void
+    var onTiltingLeft: (() -> Void)?
+    var onTiltingRight: (() -> Void)?
     
     @StateObject private var tilterManagerBox = TilterManagerBox()
     

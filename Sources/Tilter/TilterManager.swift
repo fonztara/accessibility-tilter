@@ -204,7 +204,7 @@ public class TilterManagerBox: ObservableObject {
     }
     
     @MainActor
-    public func setBindings(isOn: Binding<Bool>, onTiltingLeft: @escaping () -> Void, onTiltingRight: @escaping () -> Void) {
+    public func setBindings(isOn: Binding<Bool>, onTiltingLeft: (() -> Void)?, onTiltingRight: (() -> Void)?) {
         manager = TilterManager(isOn: isOn, onTiltingLeft: onTiltingLeft, onTiltingRight: onTiltingRight)
     }
 }
