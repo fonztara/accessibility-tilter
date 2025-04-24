@@ -66,7 +66,7 @@ struct TiltableView: ViewModifier {
         
         ZStack {
             Rectangle()
-                .foregroundStyle(isTapped ? .blue.opacity(0.1) : .blue.opacity(0.1))
+                .foregroundStyle(isTapped ? .blue.opacity(0.8) : .blue.opacity(0.1))
                 .frame(width: 200, height: 150)
             
             content
