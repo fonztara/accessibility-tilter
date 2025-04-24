@@ -68,15 +68,6 @@ struct TiltableView: ViewModifier {
             Rectangle()
                 .foregroundStyle(isTapped ? .blue.opacity(0.1) : .blue.opacity(0.1))
                 .frame(width: 200, height: 150)
-                .gesture(tap)
-                .onChange(of: isTapped) {
-                    if isTapped {
-                        isOn = true
-                    } else {
-                        isOn = false
-                    }
-                }
-                .accessibilityAddTraits(.allowsDirectInteraction)
             
             content
                 .onChange(of: isOn) {
@@ -90,6 +81,15 @@ struct TiltableView: ViewModifier {
         .onAppear {
             tilterManagerBox.setBindings(isOn: $isOn, onTiltingLeft: onTiltingLeft, onTiltingRight: onTiltingRight)
         }
+        .gesture(tap)
+        .onChange(of: isTapped) {
+            if isTapped {
+                isOn = true
+            } else {
+                isOn = false
+            }
+        }
+        .accessibilityAddTraits(.allowsDirectInteraction)
         .accessibilityElement()
         .accessibilityLabel("Value")
         .accessibilityHint("Keep pressed and tilt the device to perform actions")
