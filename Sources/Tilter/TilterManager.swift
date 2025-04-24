@@ -82,7 +82,6 @@ public final class TilterManager {
                             self.increase()
                             self.playHaptic()
                         } else if tiltingFactor <= -1 {
-                            tiltingFactor *= -1
                             self.decrease()
                             self.playHaptic()
                         }
