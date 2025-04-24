@@ -107,11 +107,11 @@ public final class TilterManager {
                 let nanoseconds: UInt64
                 
                 if tiltingFactor >= 1 {
-                    nanoseconds = 500_000_000/UInt64(tiltingFactor)
+                    nanoseconds = 200_000_000/UInt64(tiltingFactor)
                 } else if tiltingFactor <= -1 {
-                    nanoseconds = 500_000_000/UInt64(-tiltingFactor)
+                    nanoseconds = 200_000_000/UInt64(-tiltingFactor)
                 } else {
-                    nanoseconds = 500_000_000
+                    nanoseconds = 200_000_000
                 }
                 
                 do {
