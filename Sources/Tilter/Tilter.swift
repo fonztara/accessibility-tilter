@@ -12,8 +12,8 @@ struct AccessibleSlider: ViewModifier {
     func body(content: Content) -> some View {
         VStack {
             content
-                .onChange(of: isOn) { newValue in
-                    if newValue {
+                .onChange(of: isOn) {
+                    if isOn {
                         tilterManagerBox.manager?.startGyros()
                     } else {
                         tilterManagerBox.manager?.stopGyros()
@@ -35,8 +35,8 @@ struct AccessibleCalendar: ViewModifier {
     func body(content: Content) -> some View {
         VStack {
             content
-                .onChange(of: isOn) { newValue in
-                    if newValue {
+                .onChange(of: isOn) {
+                    if isOn {
                         tilterManagerBox.manager?.startGyros()
                     } else {
                         tilterManagerBox.manager?.stopGyros()
@@ -52,21 +52,41 @@ struct AccessibleCalendar: ViewModifier {
 struct TiltableView: ViewModifier {
     @Binding var isOn: Bool
     
+    @GestureState private var isTapped: Bool = false
+    
     var onTiltingLeft: (() -> Void)?
     var onTiltingRight: (() -> Void)?
     
     @StateObject private var tilterManagerBox = TilterManagerBox()
     
     func body(content: Content) -> some View {
+        let tap = DragGesture(minimumDistance: 0).updating($isTapped) { (_, isTapped, _) in
+            isTapped = true
+        }
+        
         VStack {
             content
-                .onChange(of: isOn) { newValue in
-                    if newValue {
+                .onChange(of: isOn) {
+                    if isOn {
                         tilterManagerBox.manager?.startGyros()
                     } else {
                         tilterManagerBox.manager?.stopGyros()
                     }
                 }
+            
+            Rectangle()
+                .foregroundStyle(isTapped ? .blue : .blue.opacity(0.9))
+                .frame(width: 200, height: 150)
+                .shadow(color: .black.opacity(isTapped ? 0.1 : 0.2), radius: 16, x: 0, y: 0)
+                .gesture(tap)
+                .onChange(of: isTapped) {
+                    if isTapped {
+                        isOn = true
+                    } else {
+                        isOn = false
+                    }
+                }
+                .accessibilityAddTraits(.allowsDirectInteraction)
         }
         .onAppear {
             tilterManagerBox.setBindings(isOn: $isOn, onTiltingLeft: onTiltingLeft, onTiltingRight: onTiltingRight)
