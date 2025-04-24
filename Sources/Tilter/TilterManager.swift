@@ -10,7 +10,7 @@ import CoreHaptics
 import SwiftUI
 
 @MainActor
-public class TilterManager {
+public final class TilterManager {
     let motion = CMMotionManager()
     
     var timer: Timer? = nil
