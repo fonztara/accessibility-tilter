@@ -12,7 +12,6 @@ struct AccessibleSlider: ViewModifier {
     func body(content: Content) -> some View {
         VStack {
             content
-            Toggle("Toggle", isOn: $isOn)
                 .onChange(of: isOn) { newValue in
                     if newValue {
                         tilterManagerBox.manager?.startGyros()
@@ -36,7 +35,6 @@ struct AccessibleCalendar: ViewModifier {
     func body(content: Content) -> some View {
         VStack {
             content
-            Toggle("Toggle", isOn: $isOn)
                 .onChange(of: isOn) { newValue in
                     if newValue {
                         tilterManagerBox.manager?.startGyros()
