@@ -94,7 +94,6 @@ public final class TilterManager {
                             } else {
                                 self.increase()
                             }
-                            self.playHaptic()
                         } else if tiltingFactor <= -1 {
                             if let onTiltingLeft = onTiltingLeft {
                                 onTiltingLeft()
