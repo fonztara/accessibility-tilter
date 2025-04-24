@@ -46,6 +46,15 @@ public final class TilterManager {
         self.date = date
     }
     
+    public init(isOn: Binding<Bool>, onTiltingLeft: @escaping () -> Void, onTiltingRight: @escaping () -> Void) {
+        self.isOn = isOn
+        self.onTiltingLeft = onTiltingLeft
+        self.onTiltingRight = onTiltingRight
+        
+        self.value = nil
+        self.date = nil
+    }
+    
     var gyroTask: Task<Void, Never>? = nil
     
     func startGyros() {
@@ -79,10 +88,18 @@ public final class TilterManager {
                         print(tiltingFactor)
                         
                         if tiltingFactor >= 1 {
-                            self.increase()
+                            if let onTiltingRight = onTiltingRight {
+                                onTiltingRight()
+                            } else {
+                                self.increase()
+                            }
                             self.playHaptic()
                         } else if tiltingFactor <= -1 {
-                            self.decrease()
+                            if let onTiltingLeft = onTiltingLeft {
+                                onTiltingLeft()
+                            } else {
+                                self.decrease()
+                            }
                             self.playHaptic()
                         }
                     }
@@ -107,6 +124,8 @@ public final class TilterManager {
         }
     }
     
+    var onTiltingLeft: (() -> Void)? = nil
+    var onTiltingRight: (() -> Void)? = nil
     
     func stopGyros() {
         gyroTask?.cancel()
@@ -177,5 +196,10 @@ public class TilterManagerBox: ObservableObject {
     @MainActor
     public func setBindings(isOn: Binding<Bool>, date: Binding<Date>) {
         manager = TilterManager(isOn: isOn, date: date)
+    }
+    
+    @MainActor
+    public func setBindings(isOn: Binding<Bool>, onTiltingLeft: @escaping () -> Void, onTiltingRight: @escaping () -> Void) {
+        manager = TilterManager(isOn: isOn, onTiltingLeft: onTiltingLeft, onTiltingRight: onTiltingRight)
     }
 }
