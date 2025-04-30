@@ -7,9 +7,15 @@ struct AccessibleSlider: ViewModifier {
     @Binding var isOn: Bool
     @Binding var value: Double
     
+    @GestureState private var isTapped: Bool = false
+    
     @StateObject private var tilterManagerBox = TilterManagerBox()
     
     func body(content: Content) -> some View {
+        let tap = DragGesture(minimumDistance: 0).updating($isTapped) { (_, isTapped, _) in
+            isTapped = true
+        }
+        
         VStack {
             content
                 .onChange(of: isOn) {
@@ -19,9 +25,25 @@ struct AccessibleSlider: ViewModifier {
                         tilterManagerBox.manager?.stopGyros()
                     }
                 }
+            Rectangle()
+                .foregroundStyle(isTapped ? .blue.opacity(0.8) : .blue.opacity(0.1))
+                .frame(width: 200, height: 150)
+                .padding()
         }
         .onAppear {
             tilterManagerBox.setBindings(isOn: $isOn, value: $value)
+        }
+        .accessibilityAddTraits(.allowsDirectInteraction)
+        .accessibilityElement()
+        .accessibilityLabel("Value")
+        .accessibilityHint("Keep pressed and tilt the device to perform actions")
+        .gesture(tap)
+        .onChange(of: isTapped) {
+            if isTapped {
+                isOn = true
+            } else {
+                isOn = false
+            }
         }
     }
 }
@@ -30,9 +52,15 @@ struct AccessibleCalendar: ViewModifier {
     @Binding var isOn: Bool
     @Binding var date: Date
     
+    @GestureState private var isTapped: Bool = false
+    
     @StateObject private var tilterManagerBox = TilterManagerBox()
     
     func body(content: Content) -> some View {
+        let tap = DragGesture(minimumDistance: 0).updating($isTapped) { (_, isTapped, _) in
+            isTapped = true
+        }
+        
         VStack {
             content
                 .onChange(of: isOn) {
@@ -42,9 +70,25 @@ struct AccessibleCalendar: ViewModifier {
                         tilterManagerBox.manager?.stopGyros()
                     }
                 }
+            Rectangle()
+                .foregroundStyle(isTapped ? .blue.opacity(0.8) : .blue.opacity(0.1))
+                .frame(width: 200, height: 150)
+                .padding()
         }
         .onAppear {
             tilterManagerBox.setBindings(isOn: $isOn, date: $date)
+        }
+        .accessibilityAddTraits(.allowsDirectInteraction)
+        .accessibilityElement()
+        .accessibilityLabel("Value")
+        .accessibilityHint("Keep pressed and tilt the device to perform actions")
+        .gesture(tap)
+        .onChange(of: isTapped) {
+            if isTapped {
+                isOn = true
+            } else {
+                isOn = false
+            }
         }
     }
 }
