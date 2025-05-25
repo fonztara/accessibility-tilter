@@ -19,7 +19,7 @@ Tilter is available via Swift Package Manager.
 3. Enter the URL of the repository:
 
    ```
-   https://github.com/yourusername/Tilter.git
+   https://github.com/fonztara/accessibility-tilter.git
    ```
 
 4. Select the version and add the package to your project.
